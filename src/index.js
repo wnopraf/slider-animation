@@ -7,17 +7,18 @@ const slideFrame = parseInt(window.getComputedStyle(slider).width, 10);
 
 window.addEventListener("load", () => {
   console.log("ready");
-  slider.style.transition = "all 500ms 1s";
+  slider.style.transition = "all 750ms 3s";
   slider.style.marginLeft = -slideFrame + "px";
   leftBt.style.borderColor = "orange";
 });
-
+window.addEventListener('resize', onResize)
 slider.addEventListener("transitionend", slideMove);
 
 buttonWrapper.addEventListener("click", clickSlide);
 function slideMove() {
   // reset transition after click
-  slider.style.transition = "all 500ms 1s";
+  slider.style.transition = "all 750ms 3s";
+  const slideFrame = parseInt(window.getComputedStyle(slider).width, 10)
   let { marginLeft: movedDistance } = slider.style;
   movedDistance = parseInt(movedDistance, 10);
   const limitDistance = 3;
@@ -30,7 +31,7 @@ function slideMove() {
     leftBt.style.borderColor = "orange";
     // start again the animation after reset fix
     setTimeout(() => {
-      slider.style.transition = "all 500ms 1s";
+      slider.style.transition = "all 750ms 3s";
       slider.style.marginLeft = -slideFrame + "px";
     });
   } else {
@@ -51,6 +52,7 @@ function slideMove() {
 function clickSlide(e) {
   slider.style.transition = "unset";
   /* Help to control the real element offset, since transition event alter the real margin-left value */
+  const slideFrame = parseInt(window.getComputedStyle(slider).width, 10)
   const getOffsetX = () => {
     console.log('offset', slider.offsetLeft)
     return parseInt(slider.offsetLeft, 10);
@@ -63,7 +65,7 @@ function clickSlide(e) {
   ) {
     // avoiding double click.
     if ( getOffsetX() === 0 ) return;
-    slider.style.transition = "all 500ms";
+    slider.style.transition = "all 750ms";
     // reset current transition.
     slider.style.marginLeft = slider.style.marginLeft
       
@@ -75,7 +77,7 @@ function clickSlide(e) {
   }
   if (e.target.getAttribute("data-clicker") === "right") {
     if ( getOffsetX() === -(slideFrame * 2) ) return;
-    slider.style.transition = "all 500ms";
+    slider.style.transition = "all 750ms";
     slider.style.marginLeft = 0
     setTimeout(() => {
       slider.style.marginLeft = -(slideFrame * 2) + "px";
@@ -87,7 +89,7 @@ function clickSlide(e) {
     getOffsetX() >= endView
   ) {
     if ( getOffsetX() === -slideFrame ) return;
-    slider.style.transition = "all 500ms";
+    slider.style.transition = "all 750ms";
     slider.style.marginLeft = 0
     setTimeout(() => {
       slider.style.marginLeft = -slideFrame + "px";
@@ -105,4 +107,14 @@ function allGreen(direction) {
       bt.style.borderColor = "green";
     }
   });
+}
+function onResize() {
+  const slideFrame = parseInt(window.getComputedStyle(slider).width, 10)
+  slider.style.transition = 'unset'
+  slider.style.marginLeft = '0px'
+  allGreen('left')
+  setTimeout(() => {
+    slider.style.transition = 'all 1s 3s'
+    slider.style.marginLeft = -slideFrame + 'px'
+  })
 }

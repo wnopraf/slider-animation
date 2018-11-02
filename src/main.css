@@ -29,6 +29,6 @@ body {
 .slide-buttons-item {
   cursor: pointer;
   width: 20px;
-  margin: 0 1rem;
+  margin: 0 5%;
   border: 3px solid green;
 }
